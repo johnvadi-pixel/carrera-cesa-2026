@@ -682,7 +682,7 @@ body::before {
       <label class="input-label" for="splashEmail">Número de participante</label>
       <input class="input-field" type="text" id="splashEmail" placeholder="Ej: 042" autocomplete="off" inputmode="numeric" maxlength="6">
 
-      <button class="btn btn-primary btn-full btn-lg" onclick="splashEnter()">
+      <button class="btn btn-primary btn-full btn-lg" id="btnSplash">
         Empieza ahora &nbsp;›
       </button>
     </div>
@@ -695,10 +695,10 @@ body::before {
 
 <!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav">
-  <div class="nav-tab active" onclick="showPage('mapa',this)"><span class="ti">🗺️</span>Mapa</div>
-  <div class="nav-tab" onclick="showPage('crono',this)"><span class="ti">⏱️</span>Crono</div>
-  <div class="nav-tab" onclick="showPage('podio',this)"><span class="ti">🏆</span>Podio</div>
-  <div class="nav-tab" onclick="showPage('sos',this)"><span class="ti">🆘</span>SOS</div>
+  <div class="nav-tab active" id="tab-mapa"><span class="ti">🗺️</span>Mapa</div>
+  <div class="nav-tab" id="tab-crono"><span class="ti">⏱️</span>Crono</div>
+  <div class="nav-tab" id="tab-podio"><span class="ti">🏆</span>Podio</div>
+  <div class="nav-tab" id="tab-sos"><span class="ti">🆘</span>SOS</div>
 </nav>
 
 <!-- ═══════════════ PAGE: MAPA ═══════════════ -->
@@ -738,7 +738,7 @@ body::before {
       <div class="loc-toast-top">
         <div class="loc-toast-dot"></div>
         <div class="loc-toast-label">Tu ubicación en el circuito</div>
-        <button class="loc-toast-close" onclick="stopTracking()">✕</button>
+        <button class="loc-toast-close" id="btnStopTracking">✕</button>
       </div>
       <div class="loc-toast-checkpoint" id="locCheckpoint">—</div>
       <div class="loc-toast-desc" id="locDesc">—</div>
@@ -758,13 +758,11 @@ body::before {
     <div class="loc-error" id="locError"></div>
 
     <!-- Tracking FAB -->
-    <button class="fab-track" id="fabTrack" onclick="toggleTracking()">
+    <button class="fab-track" id="fabTrack">
       <span class="fab-track-pulse" id="trackPulseDot"></span>
       <span id="fabTrackLabel">Ubicarme en el circuito</span>
     </button>
-
-    <!-- Center FAB -->
-    <button class="fab" onclick="centerMap()">⌖</button>
+    <button class="fab" id="fabCenter">⌖</button>
   </div>
 
   <div class="bottom-sheet">
@@ -780,9 +778,9 @@ body::before {
     <div class="crono-display" id="chronoDisplay">00:00:00</div>
     <div class="crono-pace">Pace: <span id="paceDisplay">— /km</span></div>
     <div class="crono-btns">
-      <button class="btn btn-primary" id="btnSS" onclick="toggleTimer()">▶ Iniciar</button>
-      <button class="btn btn-ghost" id="btnLap" onclick="addLap()" disabled style="color:var(--blue-pale)">+ Vuelta</button>
-      <button class="btn btn-ghost" onclick="resetTimer()">↺</button>
+      <button class="btn btn-primary" id="btnSS">▶ Iniciar</button>
+      <button class="btn btn-ghost" id="btnLap" disabled style="color:var(--blue-pale)">+ Vuelta</button>
+      <button class="btn btn-ghost" id="btnReset">↺</button>
     </div>
   </div>
 
@@ -819,6 +817,7 @@ body::before {
       <div class="page-title">Tabla de posiciones</div>
     </div>
     <span class="badge badge-orange">Recaudación</span>
+    <span id="dbStatus" style="font-size:10px;font-weight:600;color:var(--white-40);margin-left:4px">⏳ Conectando…</span>
   </div>
 
   <div class="add-runner-row">
@@ -826,7 +825,7 @@ body::before {
     <div class="add-runner">
       <input class="input-field" type="text" id="rName" placeholder="Nombre del corredor…" maxlength="24">
       <input class="input-field r-time" type="text" id="rTime" placeholder="mm:ss" maxlength="8">
-      <button class="btn btn-blue btn-sm" onclick="addRunner()">+ Añadir</button>
+      <button class="btn btn-blue btn-sm" id="btnAddRunner">+ Añadir</button>
     </div>
   </div>
 
@@ -843,79 +842,159 @@ body::before {
 
 <!-- ═══════════════ PAGE: SOS ═══════════════ -->
 <div class="page" id="page-sos">
-  <div class="page-header">
-    <div class="page-header-left">
-      <div class="page-eyebrow">Seguridad del evento</div>
-      <div class="page-title">Emergencias</div>
+  <div class="sos-page">
+
+    <!-- Header -->
+    <div class="page-header" style="border-bottom:1px solid rgba(255,77,109,0.25)">
+      <div class="page-header-left">
+        <div class="page-eyebrow" style="color:var(--alert)">🆘 Contactos de emergencia</div>
+        <div class="page-title">SOS</div>
+      </div>
     </div>
-    <span class="badge" style="background:rgba(255,77,109,0.2);color:var(--alert);border:1px solid rgba(255,77,109,0.3)">SOS</span>
+
+    <div style="flex:1;overflow-y:auto;padding-bottom:20px">
+
+      <!-- Zona info banner -->
+      <div style="margin:14px 16px 0;background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.25);border-radius:var(--radius-lg);padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:16px">⚠️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--white)">Zona de emergencias</span>
+        </div>
+        <div style="font-size:12px;color:var(--white-70);margin-bottom:8px">Parque Nacional · Cra 5 con Cl 35 · Santa Fé, Bogotá</div>
+        <div style="font-size:11px;color:var(--white-40);line-height:1.5">En caso de emergencia médica grave, llama primero al 123. Todos los botones abajo abren el marcador telefónico automáticamente.</div>
+      </div>
+
+      <!-- Llamar Emergencias — card destacada -->
+      <div style="margin:12px 16px 0">
+        <a href="tel:123" style="display:flex;align-items:center;gap:14px;background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.35);border-radius:var(--radius-lg);padding:16px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.background='rgba(255,77,109,0.18)'" onmouseout="this.style.background='rgba(255,77,109,0.1)'">
+          <div style="width:48px;height:48px;border-radius:var(--radius-md);background:rgba(255,77,109,0.2);border:1px solid rgba(255,77,109,0.35);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🚒</div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:800;color:var(--white);letter-spacing:-0.02em">Llamar Emergencias</div>
+            <div style="font-size:11px;color:var(--white-40);margin-top:2px">Línea nacional de emergencias</div>
+            <div style="font-size:20px;font-weight:900;color:var(--alert);letter-spacing:-0.02em;margin-top:3px">123</div>
+          </div>
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,77,109,0.15);border:1px solid rgba(255,77,109,0.3);display:flex;align-items:center;justify-content:center;font-size:16px">📞</div>
+        </a>
+      </div>
+
+      <!-- Contactos -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin:10px 16px 0">
+
+        <a href="tel:112" style="display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px;text-decoration:none;transition:background 0.15s" onmouseover="this.style.background='var(--card-hover)'" onmouseout="this.style.background='var(--card-bg)'">
+          <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(255,152,0,0.15);border:1px solid rgba(255,152,0,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🚑</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--white)">CRUE</div>
+            <div style="font-size:11px;color:var(--white-40);margin-top:1px">Urgencias Bogotá</div>
+            <div style="font-size:11px;color:var(--white-40)">Centro Regulador de Urgencias</div>
+            <div style="font-size:18px;font-weight:900;color:#ff9800;letter-spacing:-0.02em;margin-top:3px">112</div>
+          </div>
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--white-08);display:flex;align-items:center;justify-content:center;font-size:15px">📞</div>
+        </a>
+
+        <a href="tel:156" style="display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px;text-decoration:none;transition:background 0.15s" onmouseover="this.style.background='var(--card-hover)'" onmouseout="this.style.background='var(--card-bg)'">
+          <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(77,121,255,0.15);border:1px solid rgba(77,121,255,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">👮</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--white)">Policía Nacional</div>
+            <div style="font-size:11px;color:var(--white-40);margin-top:1px">Línea directa</div>
+            <div style="font-size:11px;color:var(--white-40)">Atención inmediata policial</div>
+            <div style="font-size:18px;font-weight:900;color:var(--blue-pale);letter-spacing:-0.02em;margin-top:3px">156</div>
+          </div>
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--white-08);display:flex;align-items:center;justify-content:center;font-size:15px">📞</div>
+        </a>
+
+        <a href="tel:3015551234" style="display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px;text-decoration:none;transition:background 0.15s" onmouseover="this.style.background='var(--card-hover)'" onmouseout="this.style.background='var(--card-bg)'">
+          <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏫</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--white)">CAI Parque Nacional</div>
+            <div style="font-size:11px;color:var(--white-40);margin-top:1px">Cra 5 · junto al parque</div>
+            <div style="font-size:11px;color:var(--white-40)">Centro de Atención Inmediata local</div>
+            <div style="font-size:18px;font-weight:900;color:var(--green-accent);letter-spacing:-0.02em;margin-top:3px">3015551234</div>
+          </div>
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--white-08);display:flex;align-items:center;justify-content:center;font-size:15px">📞</div>
+        </a>
+
+        <a href="tel:3101234567" style="display:flex;align-items:center;gap:12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px;text-decoration:none;transition:background 0.15s" onmouseover="this.style.background='var(--card-hover)'" onmouseout="this.style.background='var(--card-bg)'">
+          <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(124,77,255,0.15);border:1px solid rgba(124,77,255,0.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🎽</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:var(--white)">Coordinador del evento</div>
+            <div style="font-size:11px;color:var(--white-40);margin-top:1px">CESA · Casa Vargas</div>
+            <div style="font-size:11px;color:var(--white-40)">Juan Carlos Pérez</div>
+            <div style="font-size:18px;font-weight:900;color:#b39dff;letter-spacing:-0.02em;margin-top:3px">3101234567</div>
+          </div>
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--white-08);display:flex;align-items:center;justify-content:center;font-size:15px">📞</div>
+        </a>
+
+      </div>
+
+      <!-- Información de ubicación -->
+      <div style="margin:16px 16px 0;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--white-40);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+          <span>📍</span> Información de ubicación
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:var(--radius-sm);background:rgba(255,77,109,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📍</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--white)">Inicio</div><div style="font-size:11px;color:var(--white-40);margin-top:1px">Cra. 5a #35-65 · Casa Vargas CESA</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:var(--radius-sm);background:rgba(255,152,0,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🏥</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--white)">Hospital Santa Clara</div><div style="font-size:11px;color:var(--white-40);margin-top:1px">Cra. 15 #1-59 Sur · ~2 km del circuito</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:var(--radius-sm);background:rgba(0,230,118,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🏃</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--white)">Circuito</div><div style="font-size:11px;color:var(--white-40);margin-top:1px">1.14 km alrededor del Parque Nacional</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:var(--radius-sm);background:rgba(41,98,255,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🅿️</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--white)">Punto de encuentro</div><div style="font-size:11px;color:var(--white-40);margin-top:1px">Entrada principal · Cra 5</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consejos de seguridad -->
+      <div style="margin:16px 16px 0;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green-accent);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+          <span>🛡️</span> Consejos de seguridad
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white-70);flex-shrink:0;margin-top:1px">1</div><div style="font-size:12px;color:var(--white-70);line-height:1.5;font-weight:500">Si sientes mareo, náuseas o dolor en el pecho, detente inmediatamente</div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white-70);flex-shrink:0;margin-top:1px">2</div><div style="font-size:12px;color:var(--white-70);line-height:1.5;font-weight:500">Mantén tu celular cargado y con saldo durante toda la carrera</div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white-70);flex-shrink:0;margin-top:1px">3</div><div style="font-size:12px;color:var(--white-70);line-height:1.5;font-weight:500">Hidrátate en cada checkpoint (hay 5 puntos a lo largo del circuito)</div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white-70);flex-shrink:0;margin-top:1px">4</div><div style="font-size:12px;color:var(--white-70);line-height:1.5;font-weight:500">Corre siempre en el sentido indicado y respeta las señales</div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white-70);flex-shrink:0;margin-top:1px">5</div><div style="font-size:12px;color:var(--white-70);line-height:1.5;font-weight:500">No uses audífonos a volumen alto para escuchar instrucciones</div></div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Protocolo de emergencia -->
+      <div style="margin:12px 16px 20px;background:rgba(41,98,255,0.08);border:1px solid rgba(41,98,255,0.25);border-radius:var(--radius-lg);padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:16px">👥</span>
+          <span style="font-size:13px;font-weight:700;color:var(--white)">Protocolo de emergencia</span>
+        </div>
+        <div style="font-size:12px;color:var(--white-70);line-height:1.6">
+          Si presencias una emergencia: <strong style="color:var(--white)">1)</strong> Llama al 123 inmediatamente. <strong style="color:var(--white)">2)</strong> Informa tu ubicación exacta (punto del circuito). <strong style="color:var(--white)">3)</strong> No muevas a la persona herida. <strong style="color:var(--white)">4)</strong> Avisa al coordinador del evento. <strong style="color:var(--white)">5)</strong> Permanece en el lugar hasta que llegue ayuda.
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="sos-hero">
-    <div class="sos-icon-wrap">🚨</div>
-    <div class="sos-title">Zona de emergencias</div>
-    <div class="sos-sub">Parque Nacional · Cra 5 con Cl 35 · Santa Fé, Bogotá</div>
-  </div>
-
-  <a href="tel:123" class="sos-main-btn">🚒 Llamar Emergencias — 123</a>
-
-  <div class="sos-section">
-    <div class="sos-section-label">Contactos del evento y zona</div>
-    <a href="tel:112" class="sos-card em">
-      <div class="sos-card-icon">🚑</div>
-      <div class="sos-card-info">
-        <div class="sos-card-name">CRUE · Urgencias Bogotá</div>
-        <div class="sos-card-num">Línea 112</div>
-      </div>
-      <div class="sos-call-badge">Llamar</div>
-    </a>
-    <a href="tel:156" class="sos-card em">
-      <div class="sos-card-icon">👮</div>
-      <div class="sos-card-info">
-        <div class="sos-card-name">Policía Nacional</div>
-        <div class="sos-card-num">Línea 156</div>
-      </div>
-      <div class="sos-call-badge">Llamar</div>
-    </a>
-    <a href="tel:123" class="sos-card">
-      <div class="sos-card-icon">🏫</div>
-      <div class="sos-card-info">
-        <div class="sos-card-name">CAI Parque Nacional</div>
-        <div class="sos-card-num">Cra 5 · junto al parque</div>
-      </div>
-      <div class="sos-call-badge">Llamar</div>
-    </a>
-    <a href="tel:3107654321" class="sos-card">
-      <div class="sos-card-icon">🎽</div>
-      <div class="sos-card-info">
-        <div class="sos-card-name">Coordinador del evento</div>
-        <div class="sos-card-num">CESA · Casa Vargas</div>
-      </div>
-      <div class="sos-call-badge">Llamar</div>
-    </a>
-  </div>
-
-  <div class="sos-info-card">
-    <div class="sos-info-title">📍 Información de ubicación</div>
-    <div class="sos-info-item"><span class="icon">📌</span><span>Inicio: Cra. 5a #35-65 · Casa Vargas CESA</span></div>
-    <div class="sos-info-item"><span class="icon">🏥</span><span>Hospital Santa Clara: Cra. 15 #1-59 Sur · ~2 km</span></div>
-    <div class="sos-info-item"><span class="icon">🏃</span><span>Circuito: 1.14 km alrededor del Parque Nacional</span></div>
-    <div class="sos-info-item"><span class="icon">🅿️</span><span>Punto de encuentro: entrada principal · Cra 5</span></div>
-  </div>
-</div>
-
-<script>
+<script type="module">
 /* ═══ SPLASH ═══ */
 function splashEnter(){
   const name=document.getElementById('splashName').value.trim();
-  const email=document.getElementById('splashEmail').value.trim();
+  const numero=document.getElementById('splashEmail').value.trim();
   if(!name){document.getElementById('splashName').focus();return}
-  if(!email){document.getElementById('splashEmail').focus();return}
+  if(!numero){document.getElementById('splashEmail').focus();return}
   window.participantName=name;
-  window.participantEmail=email;
+  window.participantNumero=numero;
+  dbSaveRegistro(name, numero);
   document.getElementById('splashScreen').classList.add('hide');
   setTimeout(()=>{document.getElementById('splashScreen').style.display='none'},420);
 }
+document.getElementById('btnSplash').addEventListener('click', splashEnter);
 document.getElementById('splashName').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('splashEmail').focus()});
 document.getElementById('splashEmail').addEventListener('keydown',e=>{if(e.key==='Enter')splashEnter()});
 
@@ -1233,9 +1312,9 @@ function addRunner(){
   if(!name){alert('Ingresa el nombre');return}
   if(!ts||!ts.includes(':')){alert('Formato: mm:ss');return}
   const ms=t2ms(ts);if(ms===Infinity){alert('Tiempo inválido');return}
-  runners.push({name,ts,ms});runners.sort((a,b)=>a.ms-b.ms);
+  // Save to Firestore
+  dbSaveResult({name, ts, ms});
   document.getElementById('rName').value='';document.getElementById('rTime').value='';
-  renderLB();
 }
 
 function renderLB(){
@@ -1252,13 +1331,11 @@ function renderLB(){
     s.innerHTML=`<div class="podium-runner-name">${r?r.name:'—'}</div><div class="podium-time-label">${r?r.ts:'—'}</div><div class="podium-block"><div class="podium-medal">${r?medals[i]:''}</div><div class="podium-pos">${posL[i]}</div></div>`;
     pv.appendChild(s);
   });
-
   const list=document.getElementById('lbList');list.innerHTML='';
   runners.forEach((r,i)=>{
     const tc=i===0?' top1':i===1?' top2':i===2?' top3':'';
     const rankColor=i===0?'color:var(--gold)':i===1?'color:var(--silver)':i===2?'color:var(--bronze)':'class="lb-rank-other"';
     const row=document.createElement('div');row.className='lb-row'+tc;
-    // Progress bar showing relative time
     const minT=runners[0].ms, maxT=runners[runners.length-1].ms;
     const pct=runners.length>1?Math.round(100-(r.ms-minT)/(maxT-minT+1)*60):100;
     row.innerHTML=`
@@ -1266,7 +1343,7 @@ function renderLB(){
       <div class="avatar">${initials(r.name)}</div>
       <div class="lb-info">
         <div class="lb-name">${r.name}</div>
-        <div class="lb-meta">Tiempo oficial</div>
+        <div class="lb-meta">#${r.numero||'—'} · Tiempo oficial</div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="lb-time">${r.ts}</div>`;
@@ -1275,11 +1352,98 @@ function renderLB(){
 }
 renderLB();
 
-document.getElementById('rTime').addEventListener('input',function(){
+/* ══════════════════════════════════════════
+   FIREBASE — persistencia real
+══════════════════════════════════════════ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAzu26LHn5VqCln4Hibk17CZsj8t3YJsZI",
+  authDomain: "carrera-cesa-2026.firebaseapp.com",
+  projectId: "carrera-cesa-2026",
+  storageBucket: "carrera-cesa-2026.firebasestorage.app",
+  messagingSenderId: "283279160911",
+  appId: "1:283279160911:web:855e01e27daff1708edc3a"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db    = getFirestore(fbApp);
+
+/* ── Indicador de conexión ── */
+function setDbStatus(ok){
+  const el=document.getElementById('dbStatus');
+  if(!el) return;
+  el.textContent = ok ? '🟢 En línea' : '🔴 Sin conexión';
+  el.style.color  = ok ? 'var(--green-accent)' : 'var(--alert)';
+}
+
+/* ── Guardar registro del corredor al hacer splash ── */
+async function dbSaveRegistro(nombre, numero){
+  try {
+    await addDoc(collection(db,'corredores'),{
+      nombre, numero,
+      registradoEn: serverTimestamp()
+    });
+    setDbStatus(true);
+  } catch(e){ console.warn('Firestore registro:', e); setDbStatus(false); }
+}
+
+/* ── Guardar resultado en podio ── */
+async function dbSaveResult(data){
+  try {
+    await addDoc(collection(db,'resultados'),{
+      name:    data.name,
+      numero:  data.numero || window.participantNumero || '—',
+      ts:      data.ts,
+      ms:      data.ms,
+      creadoEn: serverTimestamp()
+    });
+    setDbStatus(true);
+  } catch(e){ console.warn('Firestore result:', e); setDbStatus(false); }
+}
+
+/* ── Escuchar resultados en tiempo real (onSnapshot) ── */
+function dbListenResults(){
+  const q = query(collection(db,'resultados'), orderBy('ms','asc'));
+  onSnapshot(q, snap => {
+    runners = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    renderLB();
+    setDbStatus(true);
+  }, err => {
+    console.warn('Firestore listen:', err);
+    setDbStatus(false);
+  });
+}
+
+/* ── Arrancar listener al cargar ── */
+dbListenResults();
+
+/* ── Event listeners (reemplaza onclicks en HTML — módulo ES) ── */
+// Nav tabs
+document.getElementById('tab-mapa').addEventListener('click', function(){ showPage('mapa', this) });
+document.getElementById('tab-crono').addEventListener('click', function(){ showPage('crono', this) });
+document.getElementById('tab-podio').addEventListener('click', function(){ showPage('podio', this) });
+document.getElementById('tab-sos').addEventListener('click', function(){ showPage('sos', this) });
+
+// Cronómetro
+document.getElementById('btnSS').addEventListener('click', toggleTimer);
+document.getElementById('btnLap').addEventListener('click', addLap);
+document.getElementById('btnReset').addEventListener('click', resetTimer);
+
+// Podio
+document.getElementById('btnAddRunner').addEventListener('click', addRunner);
+document.getElementById('rTime').addEventListener('input', function(){
   let v=this.value.replace(/[^0-9:]/g,'');
   if(v.length===2&&!v.includes(':'))v+=':';
   this.value=v;
 });
+
+// Mapa FABs
+document.getElementById('fabCenter').addEventListener('click', centerMap);
+document.getElementById('fabTrack').addEventListener('click', toggleTracking);
+document.getElementById('btnStopTracking').addEventListener('click', stopTracking);
 </script>
 </body>
 </html>
