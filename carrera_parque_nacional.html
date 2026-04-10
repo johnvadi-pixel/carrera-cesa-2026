@@ -80,92 +80,8 @@ body::before {
 }
 
 /* ═══════════════════════════════════
-   SPLASH / REGISTRO
+   BOTTOM NAV — UI kit nav-bar-demo style
 ═══════════════════════════════════ */
-#splashScreen {
-  position:fixed;inset:0;z-index:9999;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(41,98,255,0.45) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 60% at 80% 80%, rgba(77,121,255,0.3) 0%, transparent 60%),
-    var(--navy-dark);
-  display:flex;flex-direction:column;
-  max-width:430px;margin:0 auto;
-  overflow-y:auto;
-}
-
-.splash-inner {
-  flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:48px 28px 32px;
-  position:relative;z-index:1;
-  gap:0;
-}
-
-/* CESA Logo mark */
-.cesa-logo-wrap {
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:32px;
-}
-.cesa-mark {
-  width:48px;height:48px;
-  background:var(--white);
-  border-radius:var(--radius-sm);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;font-size:11px;color:var(--navy-dark);
-  letter-spacing:-0.5px;flex-shrink:0;
-}
-.cesa-wordmark {display:flex;flex-direction:column;gap:1px}
-.cesa-brand {
-  font-size:28px;font-weight:800;letter-spacing:-0.03em;
-  color:var(--white);line-height:1;
-}
-.cesa-tagline {
-  font-size:10px;font-weight:600;letter-spacing:0.12em;
-  text-transform:uppercase;color:var(--white-40);
-}
-
-.splash-event-eyebrow {
-  font-size:11px;font-weight:600;letter-spacing:0.12em;
-  text-transform:uppercase;color:var(--blue-electric);
-  align-self:flex-start;margin-bottom:6px;
-}
-.splash-event-title {
-  font-size:28px;font-weight:800;letter-spacing:-0.03em;line-height:1.1;
-  color:var(--white);align-self:flex-start;margin-bottom:4px;
-}
-.splash-event-sub {
-  font-size:14px;color:var(--white-70);line-height:1.5;
-  align-self:flex-start;margin-bottom:28px;
-}
-
-/* FORM CARD — glassmorphism card from UI kit */
-.splash-card {
-  width:100%;
-  background:var(--card-bg);
-  border:1px solid var(--card-border);
-  border-radius:var(--radius-xl);
-  padding:24px 20px 20px;
-  backdrop-filter:blur(20px);
-}
-.splash-card-header {
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:20px;
-}
-.splash-card-icon {
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(41,98,255,0.2);
-  border:1px solid rgba(41,98,255,0.35);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;flex-shrink:0;
-}
-.splash-card-title {
-  font-size:14px;font-weight:700;color:var(--white);
-}
-.splash-card-subtitle {
-  font-size:11px;color:var(--white-40);margin-top:1px;
-}
-
-/* Input — from UI kit */
 .input-label {
   font-size:11px;font-weight:600;letter-spacing:0.08em;
   text-transform:uppercase;color:var(--white-40);
@@ -651,53 +567,10 @@ body::before {
 </head>
 <body>
 
-<!-- ═══════════════ SPLASH ═══════════════ -->
-<div id="splashScreen">
-  <div class="splash-inner">
-
-    <div class="cesa-logo-wrap">
-      <div class="cesa-mark">CS</div>
-      <div class="cesa-wordmark">
-        <div class="cesa-brand">eleva <span style="color:var(--blue-pale)">cesa</span></div>
-        <div class="cesa-tagline">Universidad CESA · Bogotá</div>
-      </div>
-    </div>
-
-    <div class="splash-event-eyebrow">Evento de recaudación de fondos</div>
-    <div class="splash-event-title">Carrera CESA 2026</div>
-    <div class="splash-event-sub">Parque Nacional Enrique Olaya Herrera · 1.14 km</div>
-
-    <div class="splash-card">
-      <div class="splash-card-header">
-        <div class="splash-card-icon">👤</div>
-        <div>
-          <div class="splash-card-title">Registro de participante</div>
-          <div class="splash-card-subtitle">Completa para acceder al evento</div>
-        </div>
-      </div>
-
-      <label class="input-label" for="splashName">Nombre corredor</label>
-      <input class="input-field" type="text" id="splashName" placeholder="Tu nombre completo" autocomplete="name">
-
-      <label class="input-label" for="splashEmail">Número de participante</label>
-      <input class="input-field" type="text" id="splashEmail" placeholder="Ej: 042" autocomplete="off" inputmode="numeric" maxlength="6">
-
-      <button class="btn btn-primary btn-full btn-lg" id="btnSplash">
-        Empieza ahora &nbsp;›
-      </button>
-    </div>
-
-  </div>
-  <div class="splash-footer">
-    Casa Vargas · Cra 5a #35-65 · Santa Fé, Bogotá
-  </div>
-</div>
-
 <!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav">
   <div class="nav-tab active" id="tab-mapa"><span class="ti">🗺️</span>Mapa</div>
   <div class="nav-tab" id="tab-crono"><span class="ti">⏱️</span>Crono</div>
-  <div class="nav-tab" id="tab-podio"><span class="ti">🏆</span>Podio</div>
   <div class="nav-tab" id="tab-sos"><span class="ti">🆘</span>SOS</div>
 </nav>
 
@@ -705,8 +578,8 @@ body::before {
 <div class="page active" id="page-mapa">
   <div class="page-header">
     <div class="page-header-left">
-      <div class="page-eyebrow">Circuito · Parque Nacional</div>
-      <div class="page-title">Bogotá 2026</div>
+      <div class="page-eyebrow">Carrera CESA</div>
+      <div class="page-title">Correr es elevar</div>
     </div>
     <span class="badge badge-blue" id="badgeKm">— km</span>
   </div>
@@ -982,22 +855,6 @@ body::before {
   </div>
 
 <script type="module">
-/* ═══ SPLASH ═══ */
-function splashEnter(){
-  const name=document.getElementById('splashName').value.trim();
-  const numero=document.getElementById('splashEmail').value.trim();
-  if(!name){document.getElementById('splashName').focus();return}
-  if(!numero){document.getElementById('splashEmail').focus();return}
-  window.participantName=name;
-  window.participantNumero=numero;
-  dbSaveRegistro(name, numero);
-  document.getElementById('splashScreen').classList.add('hide');
-  setTimeout(()=>{document.getElementById('splashScreen').style.display='none'},420);
-}
-document.getElementById('btnSplash').addEventListener('click', splashEnter);
-document.getElementById('splashName').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('splashEmail').focus()});
-document.getElementById('splashEmail').addEventListener('keydown',e=>{if(e.key==='Enter')splashEnter()});
-
 /* ═══ NAVIGATION ═══ */
 function showPage(id,tab){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1009,25 +866,62 @@ function showPage(id,tab){
 
 /* ═══ MAP ═══ */
 let mapInit=false,map,routeLine,markerRefs=[];
+
+// Ruta oficial Carrera CESA 2026 — coordenadas exactas
 const WP=[
-  [4.622187,-74.065208],[4.622087,-74.065019],[4.621365,-74.065379],
-  [4.621337,-74.065329],[4.621525,-74.064767],[4.620736,-74.063349],
-  [4.620983,-74.063207],[4.622054,-74.063215],[4.623529,-74.063507],
-  [4.623846,-74.063760],[4.623811,-74.064046],[4.623542,-74.064589],
-  [4.623471,-74.064176],[4.623353,-74.063823],[4.623133,-74.063853],
-  [4.622505,-74.064026],[4.622717,-74.064767],[4.622642,-74.064909],
-  [4.622489,-74.064872],[4.622128,-74.065007],[4.622187,-74.065208],
+  [4.621320,-74.065375], // 0  🟠 Casa Incolda – punto de encuentro
+  [4.622041,-74.065038], // 1  🟢 Casa Vargas – inicio oficial
+  [4.622649,-74.064892], // 2
+  [4.622713,-74.064776], // 3
+  [4.623071,-74.064909], // 4
+  [4.623380,-74.065002], // 5  📍 Esquina norte – Canchas Hockey / Cll.36
+  [4.623825,-74.064035], // 6  📍 Esquina noreste – Monumento Orellana / Cra.5
+  [4.623880,-74.063740], // 7
+  [4.623538,-74.063503], // 8
+  [4.621357,-74.063211], // 9
+  [4.620730,-74.063358], // 10 📍 Esquina sureste – Tejedoras / Cll.35
+  [4.621061,-74.063862], // 11
+  [4.621515,-74.064686], // 12
+  [4.621320,-74.065396], // 13
+  [4.622047,-74.065037], // 14 🏁 Llegada – Casa Vargas
 ];
+
 function hav(a,b){const R=6371,r=Math.PI/180,dLa=(b[0]-a[0])*r,dLo=(b[1]-a[1])*r,x=Math.sin(dLa/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dLo/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
 const cum=[0];for(let i=1;i<WP.length;i++)cum.push(cum[i-1]+hav(WP[i-1],WP[i]));
 const TOTAL=cum[cum.length-1];
+
+// Puntos clave oficiales
 const CPS=[
-  {id:0,n:"Salida / Meta",lat:4.622187,lng:-74.065208,type:"start",desc:"Punto de partida y llegada · Cra 5a #35-65 · CESA"},
-  {id:4,n:"Cl 35 – Cra 5",lat:4.621525,lng:-74.064767,type:"cp",desc:"Giro hacia el costado sur-oriental del parque"},
-  {id:6,n:"Punto Sur",lat:4.620983,lng:-74.063207,type:"cp",desc:"Extremo sur del circuito · ingreso costado este"},
-  {id:8,n:"Costado Este",lat:4.623529,lng:-74.063507,type:"cp",desc:"Subida por el costado oriental del Parque Nacional"},
-  {id:10,n:"Punto Norte",lat:4.623811,lng:-74.064046,type:"cp",desc:"Punto más al norte del circuito · giro de regreso"},
-  {id:16,n:"Recta Final",lat:4.622717,lng:-74.064767,type:"cp",desc:"Últimos metros de regreso a Casa Vargas"},
+  {
+    id:0,  n:"Punto de encuentro", shortN:"Casa Incolda",
+    lat:4.621320, lng:-74.065375, type:"meeting",
+    desc:"Casa Incolda · Punto de partida logístico antes del inicio"
+  },
+  {
+    id:1,  n:"Inicio oficial", shortN:"Casa Vargas",
+    lat:4.622041, lng:-74.065038, type:"start",
+    desc:"Casa Vargas CESA · Partida oficial de la carrera"
+  },
+  {
+    id:5,  n:"Esquina norte", shortN:"Canchas Hockey / Cll.36",
+    lat:4.623380, lng:-74.065002, type:"cp",
+    desc:"Canchas de Hockey · Calle 36 · Giro al noreste"
+  },
+  {
+    id:6,  n:"Esquina noreste", shortN:"Monumento Orellana",
+    lat:4.623825, lng:-74.064035, type:"cp",
+    desc:"Monumento Orellana · Carrera 5 · Punto más al norte"
+  },
+  {
+    id:10, n:"Esquina sureste", shortN:"Tejedoras / Cll.35",
+    lat:4.620730, lng:-74.063358, type:"cp",
+    desc:"Mantenimiento Tejedoras · Calle 35 · Giro de regreso al oeste"
+  },
+  {
+    id:14, n:"Llegada", shortN:"Casa Vargas 🏁",
+    lat:4.622047, lng:-74.065037, type:"finish",
+    desc:"Casa Vargas CESA · Meta oficial de la carrera"
+  },
 ];
 CPS.forEach(c=>c.km=+cum[c.id].toFixed(2));
 
@@ -1038,17 +932,27 @@ document.getElementById('statWalk').textContent=`~${Math.round(TOTAL/0.08)}'`;
 document.getElementById('statPts').textContent=WP.length-1;
 
 function mkIcon(cp,active){
-  const s=cp.type==='start';
-  const bg=s?'#00e676':(active?'#2962ff':'#4d79ff');
-  const glow=s?'rgba(0,230,118,0.4)':(active?'rgba(41,98,255,0.5)':'rgba(77,121,255,0.25)');
-  const sz=s?18:12;
-  return L.divIcon({className:'',html:`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:${bg};border:2px solid #0a0f2e;box-shadow:0 0 0 3px ${glow};"></div>`,iconAnchor:[sz/2,sz/2]});
+  const colors={
+    meeting: {bg:'#ff9800', glow:'rgba(255,152,0,0.45)', sz:16},  // 🟠 naranja
+    start:   {bg:'#00e676', glow:'rgba(0,230,118,0.45)', sz:18},  // 🟢 verde
+    finish:  {bg:'#FFD700', glow:'rgba(255,215,0,0.5)',  sz:18},  // 🟡 dorado
+    cp:      {bg: active?'#2962ff':'#4d79ff', glow: active?'rgba(41,98,255,0.5)':'rgba(77,121,255,0.25)', sz:13},
+  };
+  const c=colors[cp.type]||colors.cp;
+  if(cp.type==='cp'&&active){c.bg='#2962ff';c.glow='rgba(41,98,255,0.5)';}
+  return L.divIcon({
+    className:'',
+    html:`<div style="width:${c.sz}px;height:${c.sz}px;border-radius:50%;background:${c.bg};border:2.5px solid #0a0f2e;box-shadow:0 0 0 3px ${c.glow};"></div>`,
+    iconAnchor:[c.sz/2,c.sz/2]
+  });
 }
 function activateCp(idx){
   CPS.forEach((c,i)=>markerRefs[i].setIcon(mkIcon(c,i===idx)));
   document.querySelectorAll('.cp-card').forEach((c,i)=>c.classList.toggle('active',i===idx));
 }
-function centerMap(){if(routeLine)map.fitBounds(routeLine.getBounds(),{padding:[32,32]})}
+function centerMap(){
+  if(routeLine) map.fitBounds(routeLine.getBounds(),{padding:[28,28]});
+}
 
 /* ═══ GPS TRACKING ═══ */
 let trackingActive=false, watchId=null, userMarker=null, userCircle=null;
@@ -1222,7 +1126,10 @@ function initMap(){
   // Main route — blue-electric from UI kit
   routeLine=L.polyline(WP,{color:'#4d79ff',weight:4.5,opacity:1,lineJoin:'round',lineCap:'round'}).addTo(map);
 
-  [{pos:[4.621100,-74.064100],l:`${cum[5].toFixed(2)} km`},{pos:[4.622800,-74.063350],l:`${cum[8].toFixed(2)} km`},{pos:[4.623700,-74.064300],l:`${cum[10].toFixed(2)} km`},{pos:[4.622600,-74.064950],l:`${TOTAL.toFixed(2)} km`}]
+  [{pos:[4.623430,-74.065000],l:`${cum[5].toFixed(2)} km`},
+   {pos:[4.623870,-74.064000],l:`${cum[6].toFixed(2)} km`},
+   {pos:[4.620820,-74.063500],l:`${cum[10].toFixed(2)} km`},
+   {pos:[4.621400,-74.065200],l:`${TOTAL.toFixed(2)} km`}]
     .forEach(k=>L.marker(k.pos,{icon:L.divIcon({className:'km-label',html:k.l,iconAnchor:[28,10]})}).addTo(map));
 
   WP.slice(1,-1).forEach(pt=>{
@@ -1231,7 +1138,7 @@ function initMap(){
   });
   CPS.forEach((cp,i)=>{
     const mk=L.marker([cp.lat,cp.lng],{icon:mkIcon(cp,false)}).addTo(map)
-      .bindPopup(`<div style="padding:3px 1px"><div class="popup-title">${cp.n}</div><div class="popup-desc">${cp.desc}</div><div class="popup-km">📍 km ${cp.km.toFixed(2)}</div></div>`,{className:'checkpoint-popup',maxWidth:210});
+      .bindPopup(`<div style="padding:3px 1px"><div class="popup-title">${cp.n}</div><div class="popup-desc">${cp.desc}</div><div class="popup-km">📍 km ${cp.km.toFixed(2)}</div></div>`,{className:'checkpoint-popup',maxWidth:220});
     mk.on('click',()=>activateCp(i));
     markerRefs.push(mk);
   });
@@ -1239,10 +1146,14 @@ function initMap(){
 
   const sc=document.getElementById('cpScroll');
   CPS.forEach((cp,i)=>{
+    const typeEmoji={meeting:'🟠',start:'🟢',cp:'📍',finish:'🏁'}[cp.type]||'📍';
+    const typeLabel={meeting:'Encuentro',start:'Inicio',cp:`km ${cp.km.toFixed(2)}`,finish:'Llegada'}[cp.type];
+    const borderColor={meeting:'rgba(255,152,0,0.5)',start:'rgba(0,230,118,0.4)',finish:'rgba(255,215,0,0.4)',cp:'var(--card-border)'}[cp.type]||'var(--card-border)';
     const d=document.createElement('div');
-    d.className=`cp-card${cp.type==='start'?' start':''}`;
-    d.innerHTML=`<div class="cp-num">${i===0?'🏁':String(i).padStart(2,'0')}</div><div class="cp-name">${cp.n}</div><div class="cp-km">${i===0?'Salida · Meta':'km '+cp.km.toFixed(2)}</div>`;
-    d.onclick=()=>{map.flyTo([cp.lat,cp.lng],17,{duration:0.8});markerRefs[i].openPopup();activateCp(i)};
+    d.className=`cp-card${cp.type==='start'||cp.type==='finish'?' start':''}`;
+    d.style.borderColor=borderColor;
+    d.innerHTML=`<div class="cp-num">${typeEmoji}</div><div class="cp-name">${cp.shortN}</div><div class="cp-km">${typeLabel}</div>`;
+    d.onclick=()=>{map.flyTo([cp.lat,cp.lng],18,{duration:0.8});markerRefs[i].openPopup();activateCp(i)};
     sc.appendChild(d);
   });
 }
@@ -1424,7 +1335,6 @@ dbListenResults();
 // Nav tabs
 document.getElementById('tab-mapa').addEventListener('click', function(){ showPage('mapa', this) });
 document.getElementById('tab-crono').addEventListener('click', function(){ showPage('crono', this) });
-document.getElementById('tab-podio').addEventListener('click', function(){ showPage('podio', this) });
 document.getElementById('tab-sos').addEventListener('click', function(){ showPage('sos', this) });
 
 // Cronómetro
